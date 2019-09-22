@@ -1,0 +1,32 @@
+syntax = "proto3";  //GRPC必须使用proto3
+
+option java_multiple_files = true;
+option java_package = "cn.lmh.examples.grpc.proto";
+
+service RouteGuide {
+  // 输入一个坐标，返回坐标和时间(1:1)
+  rpc getPoint(Point) returns (LocationNote) {}
+  // 输入一个矩形，以stream形式返回一系列点(1:n)
+  rpc listPoints(Rectangle) returns (stream Point) {}
+  // 以stream形式输入一系列点，返回点的数量和总共花费的时间(m:1)
+  rpc recordRoute(stream Point) returns (RouteSummary) {}
+  // 以stream形式输入一系列点，以stream形式返回已输入点的数量和总共花费的时间(m:n)
+  rpc getPointStream(stream Point) returns (stream RouteSummary) {}
+}
+
+message Point {
+  int32 latitude = 1;
+  int32 longitude = 2;
+}
+message Rectangle {
+  Point lo = 1;
+  Point hi = 2;
+}
+message LocationNote {
+  Point location = 1;
+  int64 timestamp = 2;
+}
+message RouteSummary {
+  int32 point_count = 1;
+  int64 elapsed_time = 2;
+}

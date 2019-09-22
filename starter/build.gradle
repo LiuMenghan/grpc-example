@@ -1,0 +1,37 @@
+plugins{
+    id 'com.google.protobuf' version '0.8.10'   //引入protobuf插件
+}
+
+sourceSets{
+    main{
+        proto {
+            srcDir 'src/main/proto' //指定.proto文件所在的位置
+        }
+    }
+}
+
+protobuf {
+    generatedFilesBaseDir = "$projectDir/src"   //生成文件的根目录
+
+    protoc {
+        artifact = "com.google.protobuf:protoc:${proto.version}"    //protoc的版本
+    }
+
+    plugins {
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:${proto.grpc.version}" //grpc的版本
+        }
+    }
+
+    generateProtoTasks {
+        all()*.plugins {
+            grpc {
+                outputSubDir = "java"   //grpc生成文件的子目录
+            }
+        }
+    }
+}
+
+dependencies {
+    compile(project(':util'))
+}

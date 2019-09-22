@@ -1,0 +1,45 @@
+plugins {
+	id 'java'
+	id 'idea'
+	id 'wrapper'
+}
+
+ext {
+	groupId = 'cn.lmh.leviathan'
+	proto = [
+		version : "3.9.0",
+		"grpc" :[
+			version : "1.23.0"
+		]
+	]
+}
+
+allprojects{
+	apply plugin: 'java'
+	apply plugin: 'idea'
+
+	sourceCompatibility=JavaVersion.VERSION_1_8
+	targetCompatibility=JavaVersion.VERSION_1_8
+
+	project.group = 'cn.lmh.examples'
+
+	compileJava.options.encoding = 'UTF-8'
+}
+
+subprojects{
+	repositories {
+		mavenCentral()
+		mavenLocal();
+	};
+	configurations {
+		compile
+	}
+
+	dependencies {
+		compile "io.grpc:grpc-netty-shaded:${proto.grpc.version}"
+		compile "io.grpc:grpc-protobuf:${proto.grpc.version}"
+		compile "io.grpc:grpc-stub:${proto.grpc.version}"
+
+		testCompile group: 'junit', name: 'junit', version: '4.12'
+	}
+}
