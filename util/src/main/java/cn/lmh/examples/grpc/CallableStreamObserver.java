@@ -14,6 +14,7 @@ public class CallableStreamObserver<T> implements StreamObserver<T> {
     @Override
     public void onError(Throwable t) {
         this.isCompleted = true;
+        this.t=t;
         notifyAll();
     }
     @Override
@@ -22,7 +23,7 @@ public class CallableStreamObserver<T> implements StreamObserver<T> {
         notifyAll();
     }
     public List<T> get() throws Throwable{
-        if(!this.isCompleted){
+        while(!this.isCompleted){
             synchronized (this) {
                 this.wait(60 * 1000);
             }
