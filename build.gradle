@@ -5,7 +5,7 @@ plugins {
 }
 
 ext {
-	groupId = 'cn.lmh.leviathan'
+	groupId = 'cn.lmh.examples'
 	proto = [
 		version : "3.9.0",
 		"grpc" :[

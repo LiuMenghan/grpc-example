@@ -18,11 +18,11 @@ public class RouteGuideClient {
     private final RouteGuideGrpc.RouteGuideStub asyncStub;
 
     public RouteGuideClient(String host, int port) {
-        this(ManagedChannelBuilder.forAddress(host, port).usePlaintext());
-    }
-
-    /** Construct client for accessing RouteGuide server using the existing channel. */
-    public RouteGuideClient(ManagedChannelBuilder<?> channelBuilder) {
+        String target = "dns:///" + host + ":" + port;
+        ManagedChannelBuilder<?> channelBuilder = ManagedChannelBuilder
+                .forTarget(target)
+                //.forAddress(host, port)
+                .usePlaintext();
         channel = channelBuilder.build();
         blockingStub = RouteGuideGrpc.newBlockingStub(channel);
         asyncStub = RouteGuideGrpc.newStub(channel);

@@ -2,3 +2,4 @@ rootProject.name = 'grpc-example'
 
 include 'util'
 include 'starter'
+include 'superior'
